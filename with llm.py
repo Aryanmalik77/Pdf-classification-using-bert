@@ -21,7 +21,7 @@ with st.sidebar:
     st.header("Settings")
     words_per_chunk = st.slider("Words per chunk", 100, 300, 200)
     min_chunks_per_topic = st.slider("Min chunks per topic", 2, 10, 3)
-    use_llm_enrichment = st.checkbox("🤖 Use LLM for chunk enrichment", value=False)
+    use_llm_enrichment = st.checkbox("Use LLM for chunk enrichment", value=False)
 
     if use_llm_enrichment:
         st.info(" LangChain + Hugging Face LLM")
@@ -64,7 +64,7 @@ def load_langchain_llm(model_name):
                 max_length=150
             )
 
-        # Wrap in LangChain
+    
         llm = HuggingFacePipeline(pipeline=hf_pipeline)
         return llm
 
@@ -337,7 +337,7 @@ if uploaded_file:
             llm = load_langchain_llm(llm_model)
 
         if llm:
-            st.info(f"🔗 Using LangChain with {enrichment_mode} strategy")
+            st.info(f"Using LangChain with {enrichment_mode} strategy")
 
             prompt_template = create_langchain_prompts(enrichment_mode)
 
@@ -351,7 +351,7 @@ if uploaded_file:
             )
             chunks = enriched_chunks
             st.success(" Chunks enriched with LangChain LLM!")
-            with st.expander("🔍 View Example Enrichment"):
+            with st.expander(" View Example Enrichment"):
                 if len(enriched_chunks) > 0:
                     example = enriched_chunks[0]
                     if "[LLM_ENRICHMENT:" in example:
@@ -362,7 +362,7 @@ if uploaded_file:
                         st.info(enriched.replace("]", ""))
         else:
             st.error(" Failed to load LangChain LLM. Using original chunks.")
-    st.write("🔍 Step 3: Finding topics in your book...")
+    st.write(" Step 3: Finding topics in your book...")
     with st.spinner(" Analyzing with BERT..."):
         topic_model, topics, probs = find_topics(chunks, min_size=min_chunks_per_topic)
         topic_info = topic_model.get_topic_info()
@@ -396,7 +396,7 @@ if uploaded_file:
                     st.text_area("", example_text[:250] + "...", height=100, key=f"topic_{topic_id}")
 
     st.write("---")
-    st.write("## 🔗 Topic Connectivity")
+    st.write("## Topic Connectivity")
 
     with st.spinner("Analyzing connections..."):
         connections, similarity_matrix = get_topic_connections(topic_model, topic_ids, threshold=0.5)
@@ -496,3 +496,4 @@ else:
 
 
     st.info(" Upload a book PDF to start analysis")
+
