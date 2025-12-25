@@ -323,17 +323,17 @@ if uploaded_file:
         st.warning(" Very few sections. Try a longer book or smaller chunk size.")
         st.stop()
     st.write(" Step 3: Finding topics in your book...")
-    st.write("✂️ Step 2: Splitting book into sections...")
+    st.write(" Step 2: Splitting book into sections...")
     chunks = split_into_chunks(text, chunk_size=words_per_chunk)
-    st.success(f"✅ Created {len(chunks)} sections")
+    st.success(f" Created {len(chunks)} sections")
 
     if len(chunks) < 5:
-        st.warning("⚠️ Very few sections. Try a longer book or smaller chunk size.")
+        st.warning(" Very few sections. Try a longer book or smaller chunk size.")
         st.stop()
     if use_llm_enrichment:
-        st.write("🤖 Step 2.5: Enriching chunks with LangChain + Hugging Face...")
+        st.write(" Step 2.5: Enriching chunks with LangChain + Hugging Face...")
 
-        with st.spinner(f"⏳ Loading {llm_model} into LangChain..."):
+        with st.spinner(f" Loading {llm_model} into LangChain..."):
             llm = load_langchain_llm(llm_model)
 
         if llm:
@@ -341,7 +341,7 @@ if uploaded_file:
 
             prompt_template = create_langchain_prompts(enrichment_mode)
 
-            with st.expander("👁️ View Prompt Template"):
+            with st.expander(" View Prompt Template"):
                 st.code(prompt_template.template, language="text")
             enriched_chunks = enrich_chunks_with_langchain(
                 chunks,
@@ -447,7 +447,7 @@ if uploaded_file:
     st.write("---")
 
 
-    st.header("🌳 Hierarchical Topic Structure")
+    st.header("Hierarchical Topic Structure")
 
     try:
         with st.spinner("Building topic hierarchy..."):
@@ -456,7 +456,7 @@ if uploaded_file:
 
 
         # Traditional Dendrogram
-        with st.expander("🔬 View Traditional Dendrogram"):
+        with st.expander(" View Traditional Dendrogram"):
             fig_hierarchy = topic_model.visualize_hierarchy(hierarchical_topics=hierarchical_topics)
             st.plotly_chart(fig_hierarchy, use_container_width=True)
 
@@ -464,7 +464,7 @@ if uploaded_file:
             " Topic hierarchy created! The organization chart shows how topics are related in a parent-child structure.")
 
         # Show hierarchy table
-        with st.expander("📋 View Hierarchy Details"):
+        with st.expander("View Hierarchy Details"):
             hierarchy_data = []
             for _, row in hierarchical_topics.iterrows():
                 if row['Parent_ID'] != row['Topics']:
@@ -486,12 +486,13 @@ if uploaded_file:
                 st.dataframe(hierarchy_df, use_container_width=True, hide_index=True)
 
     except Exception as e:
-        st.error(f"❌ Could not create hierarchy: {e}")
-        st.info("💡 This might happen with very few topics. Try analyzing a")
+        st.error(f" Could not create hierarchy: {e}")
+        st.info("This might happen with very few topics. Try analyzing a")
     st.write("---")
 
 
 
 else:
+
 
     st.info(" Upload a book PDF to start analysis")
